@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Получаем список изменённых и новых файлов в индексе Git (staged)
+FILES=$(git diff --cached --name-only --diff-filter=ACM "*.py" | sed 's| |\\ |g')
+
+if [ -z "$FILES" ]; then
+    # echo "No Python files to format."
+    exit 0
+fi
+ 
+echo "Formatting staged Python files with autopep8:"
+echo "$FILES"
+
+# Форматируем только эти файлы
+.venv/bin/autopep8 --in-place $FILES
+
+# Добавляем изменения обратно в индекс
+git add $FILES

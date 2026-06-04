@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    container_name: askqueue_app
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://uuser:ppassword@queue_postgres:5432/ask_queue_db
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - queue_postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h queue_postgres -U uuser -d ask_queue_db || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  queue_postgres:
+    container_name: queue_postgres
+    image: postgres:14.8-alpine3.18
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ask_queue_db
+      POSTGRES_USER: uuser
+      POSTGRES_PASSWORD: ppassword
+    volumes:
+      - pg-askqueue-vol:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uuser -d ask_queue_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  pg-askqueue-vol:
+    driver: local

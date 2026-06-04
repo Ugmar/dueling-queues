@@ -1,0 +1,10 @@
+aiogram==3.17.0
+python-dotenv==1.0.1
+sqlalchemy==2.0.42
+aiosqlite==0.21.0
+autopep8==2.3.2
+ollama==0.6.1
+PyMuPDF==1.26.6
+trafilatura==2.0.0
+faker==38.2.0
+asyncpg==0.29.0
