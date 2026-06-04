@@ -55,6 +55,7 @@ dueling-queues/
 ├── docker-compose.yml  # Оркестрация контейнеров (App + PostgreSQL)
 ├── Makefile            # Удобные алиасы для автоматизации разработки
 └── main.py             # Точка входа приложения
+
 # Let everything go
 make
 
